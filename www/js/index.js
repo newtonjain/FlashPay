@@ -1,13 +1,22 @@
-angular.module('starter.controllers', [])
-
-.controller('AppCtrl', function($scope) {
-  alert('here');
-  //document.addEventListener('deviceready', this.onDeviceReady, false);
-  $scope.tapping = function(){
-    $scope.app.initialize();
-  };
-
-$scope.app = {
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -17,15 +26,14 @@ $scope.app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-          document.addEventListener('deviceready', this.onDeviceReady, false);
-
+        document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-      alert('1');
+
         // When the device is ready, hide the listening element
         app.hideElement('.listening');
 
@@ -37,12 +45,12 @@ $scope.app = {
         navigator.triangle.initialize(
             "vZbpthAY7lCMEQF", // application ID
             "JyA9Qbil4E", // access key
-            "O7ZiSeoLFzUs0M7zoJl5IsKrNtNTDJaMUw6AXMCiV6NYIgxN2gMzZZVmnxvpqv7W", // secret key
+            "O7ZiSeoLFzUs0M7zoJl5IsKrNtNTDJaMUw6AXMCiV6NYIgxN2gMzZZVmnxvpqv7W",// secret key
             function () // success callback
             {
                 // Hide that the device is ready, it's given now
                 app.hideElement('.received');
-                alert('I am here too');
+
                 // Display the Triangle ready element
                 app.showElement('.triangle-ready');
 
@@ -81,12 +89,13 @@ $scope.app = {
         // activationDate, expiryDate, cardPreferredName, and encryptedAccountNumber
         // may be available.
         var dataToShow = card.cardBrand;
+        alert(dataToShow);
         if (card.cardholderName != undefined)
         {
             dataToShow += "\n" + card.cardholderName;
         }
         dataToShow += "\n**** **** **** " + card.lastFourDigits;
-
+         alert(JSON.stringify(card));
         alert(dataToShow);
     },
     onTapDetect: function ()
@@ -99,37 +108,3 @@ $scope.app = {
         console.error(error);
     }
 };
-  
-
-})
-
-.controller('DashCtrl', function($scope) {
-
-})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-
-//  http.$get('flashpay.herokuapp.com/createPayment', params)
-});
