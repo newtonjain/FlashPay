@@ -110,11 +110,9 @@ angular.module('starter.controllers', [])
     //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
-
-    $scope.chats = Chats.all();
-    $scope.remove = function (chat) {
-        Chats.remove(chat);
-    };
+    Chats.all(function (transactions) {
+        $scope.chats = transactions;
+    });
 })
 
 .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
