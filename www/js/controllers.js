@@ -28,6 +28,12 @@ angular.module('starter.controllers', [])
     amount: '0'
   }
 
+   $ionicModal.fromTemplateUrl('templates/transactionComplete.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
   function triggerEvent (nfcEvent) {
       $scope.tag = nfcEvent.tag;
       $scope.hideSheet();
@@ -43,7 +49,7 @@ angular.module('starter.controllers', [])
       function () {
       $scope.hideSheet = $ionicActionSheet.show({
           buttons: [
-       { text: '<center><b>You are going to pay -' + $scope.amount}
+       { text: '<center><b>You are going to pay $' + $scope.amount}
      ],
            titleText: '<center>Tap your card please.</center>'
         });
@@ -67,43 +73,39 @@ angular.module('starter.controllers', [])
 
   var assignCard = function(tag) {
      if($scope.tag.id[0] == -49 && $scope.tag.id[1] == 76 && $scope.tag.id[2] == 98 && $scope.tag.id[3] == 5) {
-        alert('sup1');
         $scope.creditCard = vcard;
     }
     if($scope.tag.id[0] == 111 && $scope.tag.id[1] == 122 && $scope.tag.id[2] == 84 && $scope.tag.id[3] == 11) {
-        alert('sup2');
         $scope.creditCard = acard;
     }
     if($scope.tag.id[0] == 15 && $scope.tag.id[1] == -107 && $scope.tag.id[2] == -70 && $scope.tag.id[3] == -7) {
-        alert('sup2');
         $scope.creditCard = mcard;
     }
      $scope.creditCard.amount = $scope.amount;
      alert(JSON.stringify($scope.creditCard));
 
- $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+
 
     nfc.removeTagDiscoveredListener(triggerEvent, function (){
     }, function (error){});
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
+      $scope.modal.show();
         alert('recieved' + data);
     }).error(function (data, status, headers, config) {
-        alert('There was a problem retrieving your information' + data);
+        alert('There was a problem retrieving your information' + data+ status);
     });
 
   };
 
-  $scope.justcheck = function(){
- alert(JSON.stringify($scope.creditCard));
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
+  };
+
+
+  $scope.justcheck = function(){    
     }
-
-
 })
 
 .controller('DashCtrl', function ($scope) {
@@ -126,7 +128,9 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
-    $scope.chat = Chats.get($stateParams.chatId);
+    Chats.all(function (transactions) {
+        $scope.chats = transactions;
+    });
 })
 
 .controller('AccountCtrl', function ($scope) {
