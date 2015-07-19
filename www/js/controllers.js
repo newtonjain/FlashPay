@@ -27,6 +27,12 @@ angular.module('starter.controllers', [])
     amount: '0'
   }
 
+   $ionicModal.fromTemplateUrl('templates/transactionComplete.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
   function triggerEvent (nfcEvent) {
       $scope.tag = nfcEvent.tag;
       $scope.hideSheet();
@@ -69,17 +75,14 @@ angular.module('starter.controllers', [])
      $scope.creditCard.amount = $scope.amount;
      alert(JSON.stringify($scope.creditCard));
 
- $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+
 
     nfc.removeTagDiscoveredListener(triggerEvent, function (){
     }, function (error){});
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
+      $scope.modal.show();
         alert('recieved' + data);
     }).error(function (data, status, headers, config) {
         alert('There was a problem retrieving your information' + data);
@@ -87,11 +90,13 @@ angular.module('starter.controllers', [])
 
   };
 
-  $scope.justcheck = function(){
- alert(JSON.stringify($scope.creditCard));
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
+  };
+
+
+  $scope.justcheck = function(){   
     }
-
-
 })
 
 .controller('DashCtrl', function ($scope) {
