@@ -6,25 +6,25 @@ angular.module('starter.controllers', [])
     $scope.amount = null;
 
   var vcard  = {
-    name: 'Newton Jain',
+    firstName: 'Newton',
+    lastName: 'Jain',
     number: '4005519200000004',
-    expiry: '08/16',
-    ccv: '123',
-    type: 'Visa'
+    expirationDate: '08/16',
+    amount: '99'
   },
   acard= {
-    name: 'Tian Yuan Zhao',
+    firstName: 'Tian',
+    lastName: 'Yuan',
     number: '371449635398431',
-    expiry: '04/16',
-    ccv: '222',
-    type: 'American Express'
+    expirationDate: '08/16',
+    amount: '99'
   },
   mcard = {
-    name: 'Deniel Scott',
+    firstName: 'Daniel',
+    lastName: 'Scott',
     number: '4519023121272361',
-    expiry: '06/15',
-    ccv: '989',
-    type: 'MasterCard'
+    expirationDate: '08/16',
+    amount: '99'
   }
 
     //document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -61,7 +61,8 @@ angular.module('starter.controllers', [])
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
-        alert('recieved' + data);
+        alert('recieved' + 
+          );
     }).error(function (data, status, headers, config) {
         alert('There was a problem retrieving your information' + data);
     });
