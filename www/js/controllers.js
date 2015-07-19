@@ -9,21 +9,21 @@ angular.module('starter.controllers', [])
     firstName: 'Newton',
     lastName: 'Jain',
     number: '4005519200000004',
-    expirationDate: '0816',
+    expirationDate: '08/16',
     amount: '0'
   },
   acard= {
     firstName: 'Tian',
     lastName: 'Yuan',
     number: '371449635398431',
-    expirationDate: '0816',
+    expirationDate: '08/16',
     amount: '0'
   },
   mcard = {
     firstName: 'Daniel',
     lastName: 'Scott',
     number: '4519023121272361',
-    expirationDate: '0816',
+    expirationDate: '08/16',
     amount: '0'
   }
 
