@@ -27,18 +27,18 @@ angular.module('starter.controllers', [])
     amount: '0'
   }
 
+  function triggerEvent (nfcEvent) {
+      $scope.tag = nfcEvent.tag;
+      $scope.hideSheet();
+      assignCard($scope.tag);
+
+  }
     //document.addEventListener('deviceready', this.onDeviceReady, false);
   $scope.tapping = function(amount){
     //alert('amount'  + amount);
 
     $scope.amount = amount;
-    nfc.addTagDiscoveredListener(
-      function (nfcEvent) {
-        $scope.tag = nfcEvent.tag;
-        $scope.hideSheet();
-        assignCard($scope.tag);
-
-      },
+    nfc.addTagDiscoveredListener(triggerEvent,
       function () {
       $scope.hideSheet = $ionicActionSheet.show({
           buttons: [
@@ -75,9 +75,7 @@ angular.module('starter.controllers', [])
     $scope.modal = modal;
   });
 
-    nfc.removeTagDiscoveredListener(function (nfcEvent){
-      alert('removing' + nfcEvent);
-    }, function (){
+    nfc.removeTagDiscoveredListener(triggerEvent, function (){
     }, function (error){});
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
