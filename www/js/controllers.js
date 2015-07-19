@@ -7,8 +7,8 @@ angular.module('starter.controllers', [])
     $scope.txid = null;
 
   var vcard  = {
-    firstName: 'Newton',
-    lastName: 'Jain',
+    firstName: 'Shiva',
+    lastName: 'Kaushal',
     number: '4005519200000004',
     expirationDate: '08/16',
     amount: '0'
@@ -23,7 +23,7 @@ angular.module('starter.controllers', [])
   mcard = {
     firstName: 'Daniel',
     lastName: 'Scott',
-    number: '4519023121272361',
+    number: '5555555555554444',
     expirationDate: '08/16',
     amount: '0'
   }
