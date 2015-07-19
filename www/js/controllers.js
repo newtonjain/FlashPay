@@ -4,6 +4,9 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope, $http, $ionicActionSheet, $ionicModal) {
     $scope.creditCard = {};
     $scope.amount = null;
+    $scope.txid = null;
+    
+
 
   var vcard  = {
     firstName: 'Newton',
@@ -33,6 +36,18 @@ angular.module('starter.controllers', [])
     $scope.modal = modal;
   });
 
+  $ionicModal.fromTemplateUrl('templates/login.html', {
+    scope: $scope
+  }).then(function(modallogin) {
+      $scope.modallogin = modallogin;
+      $scope.modallogin.show();
+  });
+
+   $ionicModal.fromTemplateUrl('templates/transactionDetails.html', { scope: $scope })
+        .then(function (txDetails) {
+            $scope.txDetails = txDetails;
+        });
+
   function triggerEvent (nfcEvent) {
       $scope.tag = nfcEvent.tag;
       $scope.hideSheet();
@@ -57,6 +72,18 @@ angular.module('starter.controllers', [])
         console.log("Error: " + reason);
       }
     );
+  };
+
+  $scope.verifyTxId = function (txid) {
+      $scope.txid = txid;
+      $http.get('https://flashpay.herokuapp.com/getinfo/' + $scope.txid)
+        .success(function (data) {
+            $scope.currentTx = data[0];
+            $scope.txDetails.show();
+        })
+        .error(function (data) {
+            alert("Error: " + data);
+        });
   };
 
   var assignCard = function(tag) {
@@ -91,6 +118,17 @@ angular.module('starter.controllers', [])
     $scope.modal.hide();
   };
 
+  $scope.doLogin = function (username, password) {
+      if (username.toLowerCase() === "newtonjain" && password.toLowerCase() === "1234") {
+          $scope.modallogin.hide();
+      } else {
+          alert("Invalid password entered");
+      }
+  };
+
+  $scope.closeTxDetails = function () {
+      $scope.txDetails.hide();
+  };
 
   $scope.justcheck = function(){    
     }
