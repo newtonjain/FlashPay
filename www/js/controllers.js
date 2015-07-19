@@ -61,8 +61,7 @@ angular.module('starter.controllers', [])
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
-        alert('recieved' + 
-          );
+        alert('recieved' + data);
     }).error(function (data, status, headers, config) {
         alert('There was a problem retrieving your information' + data);
     });
@@ -90,11 +89,9 @@ angular.module('starter.controllers', [])
     //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
-
-    $scope.chats = Chats.all();
-    $scope.remove = function (chat) {
-        Chats.remove(chat);
-    };
+    Chats.all(function (transactions) {
+        $scope.chats = transactions;
+    });
 })
 
 .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
