@@ -1,109 +1,81 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope) {
-  alert('here');
-  //document.addEventListener('deviceready', this.onDeviceReady, false);
+.controller('AppCtrl', function($scope, $http) {
+    $scope.creditCard = {};
+    $scope.amount = null;
+
+  var vcard  = {
+    name: 'Newton Jain',
+    number: '4005519200000004',
+    expiry: '08/16',
+    ccv: '123',
+    type: 'Visa'
+  },
+  acard= {
+    name: 'Tian Yuan Zhao',
+    number: '371449635398431',
+    expiry: '04/16',
+    ccv: '222',
+    type: 'American Express'
+  },
+  mcard = {
+    name: 'Deniel Scott',
+    number: '4519023121272361',
+    expiry: '06/15',
+    ccv: '989',
+    type: 'MasterCard'
+  }
+
+    //document.addEventListener('deviceready', this.onDeviceReady, false);
   $scope.tapping = function(){
-    $scope.app.initialize();
+
+    nfc.addTagDiscoveredListener(
+      function (nfcEvent) {
+        $scope.tag = nfcEvent.tag;
+        alert(JSON.stringify($scope.tag.id));
+        assignCard($scope.tag);
+      },
+      function () {
+        alert("Tap your card please.");
+      },
+      function (reason) {
+        console.log("Error: " + reason);
+      }
+    );
   };
 
-$scope.app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-          document.addEventListener('deviceready', this.onDeviceReady, false);
-
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-      alert('1');
-        // When the device is ready, hide the listening element
-        app.hideElement('.listening');
-
-        // Display that the device is ready
-        app.showElement('.received');
-
-        // Initialize Triangle
-        // TODO: change these values to values you obtain for your own application from triangle.io
-        navigator.triangle.initialize(
-            "vZbpthAY7lCMEQF", // application ID
-            "JyA9Qbil4E", // access key
-            "O7ZiSeoLFzUs0M7zoJl5IsKrNtNTDJaMUw6AXMCiV6NYIgxN2gMzZZVmnxvpqv7W", // secret key
-            function () // success callback
-            {
-                // Hide that the device is ready, it's given now
-                app.hideElement('.received');
-                alert('I am here too');
-                // Display the Triangle ready element
-                app.showElement('.triangle-ready');
-
-                // Subscribe to events that the Triangle APIs raise
-                document.addEventListener('ontaperror', app.onTapError, false);
-                document.addEventListener('ontapdetect', app.onTapDetect, false);
-                document.addEventListener('ontapsuccess', app.onNewCard, false);
-            },
-            function (message) // error callback
-            {
-                console.log("there was an error initializing the Triangle APIs");
-                console.error(message);
-            }
-        );
-    },
-    showElement: function (css)
-    {
-        var parentElement = document.getElementById('notifications');
-        var element = parentElement.querySelector(css);
-
-        element.setAttribute('style', 'display:block');
-    },
-    hideElement: function (css)
-    {
-        var parentElement = document.getElementById('notifications');
-        var element = parentElement.querySelector(css);
-
-        element.setAttribute('style', 'display:none');
-    },
-    onNewCard: function (card)
-    {
-        console.log("Scanned card successfully.");
-
-        // Display basic card information to the user
-        // various other properties such as cardholderName,
-        // activationDate, expiryDate, cardPreferredName, and encryptedAccountNumber
-        // may be available.
-        var dataToShow = card.cardBrand;
-        if (card.cardholderName != undefined)
-        {
-            dataToShow += "\n" + card.cardholderName;
-        }
-        dataToShow += "\n**** **** **** " + card.lastFourDigits;
-
-        alert(dataToShow);
-    },
-    onTapDetect: function ()
-    {
-        console.log("Detected new tap.");
-    },
-    onTapError: function(error)
-    {
-        console.log("Error processing contactless card.");
-        console.error(error);
+  var assignCard = function(tag) {
+     if($scope.tag.id[0] == -49 && $scope.tag.id[1] == 76 && $scope.tag.id[2] == 98 && $scope.tag.id[3] == 5) {
+        alert('sup1');
+        $scope.creditCard = vcard;
     }
-};
-  
+    if($scope.tag.id[0] == 111 && $scope.tag.id[1] == 122 && $scope.tag.id[2] == 84 && $scope.tag.id[3] == 11) {
+        alert('sup2');
+        $scope.creditCard = acard;
+    }
+    if($scope.tag.id[0] == 15 && $scope.tag.id[1] == -107 && $scope.tag.id[2] == -70 && $scope.tag.id[3] == -7) {
+        alert('sup2');
+        $scope.creditCard = mcard;
+    }
+
+    $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
+    .success(function(data){
+        alert('recieved'+ data);
+    }).error(function(data) {
+        alert('There was a problem retrieving your information' + data);
+    });
+
+  };
+
+  $scope.justcheck = function(){
+ alert(JSON.stringify($scope.creditCard));
+    }
+
 
 })
 
 .controller('DashCtrl', function($scope) {
+
 
 })
 

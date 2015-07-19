@@ -17,94 +17,49 @@
  * under the License.
  */
 var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+  // Application Constructor
+  initialize: function () {
+    this.bindEvents();
+  },
+  // Bind Event Listeners
+  //
+  // Bind any events that are required on startup. Common events are:
+  // 'load', 'deviceready', 'offline', and 'online'.
+  bindEvents: function () {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  // deviceready Event Handler
+  //
+  // The scope of 'this' is the event. In order to call the 'receivedEvent'
+  // function, we must explicitly call 'app.receivedEvent(...);'
+  onDeviceReady: function () {
+    app.receivedEvent('deviceready');
 
-        // When the device is ready, hide the listening element
-        app.hideElement('.listening');
+    // nfc.addTagDiscoveredListener(
+    //   function (nfcEvent) {
+    //     var tag = nfcEvent.tag;
+    //     alert(JSON.stringify(nfcEvent.tag));
+    //   },
+    //   function () {
+    //     alert("Listening for non-NDEF tags.");
+    //   },
+    //   function (reason) {
+    //     console.log("Error: " + reason);
+    //   }
+    // );
 
-        // Display that the device is ready
-        app.showElement('.received');
+  },
+  // Update DOM on a Received Event
+  receivedEvent: function (id) {
+    var parentElement = document.getElementById(id);
+    var listeningElement = parentElement.querySelector('.listening');
+    var receivedElement = parentElement.querySelector('.received');
 
-        // Initialize Triangle
-        // TODO: change these values to values you obtain for your own application from triangle.io
-        navigator.triangle.initialize(
-            "vZbpthAY7lCMEQF", // application ID
-            "JyA9Qbil4E", // access key
-            "O7ZiSeoLFzUs0M7zoJl5IsKrNtNTDJaMUw6AXMCiV6NYIgxN2gMzZZVmnxvpqv7W",// secret key
-            function () // success callback
-            {
-                // Hide that the device is ready, it's given now
-                app.hideElement('.received');
+    listeningElement.setAttribute('style', 'display:none;');
+    receivedElement.setAttribute('style', 'display:block;');
 
-                // Display the Triangle ready element
-                app.showElement('.triangle-ready');
-
-                // Subscribe to events that the Triangle APIs raise
-                document.addEventListener('ontaperror', app.onTapError, false);
-                document.addEventListener('ontapdetect', app.onTapDetect, false);
-                document.addEventListener('ontapsuccess', app.onNewCard, false);
-            },
-            function (message) // error callback
-            {
-                console.log("there was an error initializing the Triangle APIs");
-                console.error(message);
-            }
-        );
-    },
-    showElement: function (css)
-    {
-        var parentElement = document.getElementById('notifications');
-        var element = parentElement.querySelector(css);
-
-        element.setAttribute('style', 'display:block');
-    },
-    hideElement: function (css)
-    {
-        var parentElement = document.getElementById('notifications');
-        var element = parentElement.querySelector(css);
-
-        element.setAttribute('style', 'display:none');
-    },
-    onNewCard: function (card)
-    {
-        console.log("Scanned card successfully.");
-
-        // Display basic card information to the user
-        // various other properties such as cardholderName,
-        // activationDate, expiryDate, cardPreferredName, and encryptedAccountNumber
-        // may be available.
-        var dataToShow = card.cardBrand;
-        alert(dataToShow);
-        if (card.cardholderName != undefined)
-        {
-            dataToShow += "\n" + card.cardholderName;
-        }
-        dataToShow += "\n**** **** **** " + card.lastFourDigits;
-         alert(JSON.stringify(card));
-        alert(dataToShow);
-    },
-    onTapDetect: function ()
-    {
-        console.log("Detected new tap.");
-    },
-    onTapError: function(error)
-    {
-        console.log("Error processing contactless card.");
-        console.error(error);
-    }
+    console.log('Received Event: ' + id);
+  }
 };
+
+app.initialize();
