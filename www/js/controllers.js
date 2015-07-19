@@ -50,6 +50,7 @@ angular.module('starter.controllers', [])
       $scope.tag = nfcEvent.tag;
       $scope.hideSheet();
       assignCard($scope.tag);
+      //alert(JSON.stringify($scope.tag));
 
   }
     //document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -85,7 +86,7 @@ angular.module('starter.controllers', [])
   };
 
   var assignCard = function(tag) {
-     if($scope.tag.id[0] == -49 && $scope.tag.id[1] == 76 && $scope.tag.id[2] == 98 && $scope.tag.id[3] == 5) {
+     if($scope.tag.id[0] == 33 && $scope.tag.id[1] == 34 && $scope.tag.id[2] == 35 && $scope.tag.id[3] == 36) {
         $scope.creditCard = vcard;
     }
     if($scope.tag.id[0] == 111 && $scope.tag.id[1] == 122 && $scope.tag.id[2] == 84 && $scope.tag.id[3] == 11) {
@@ -95,9 +96,6 @@ angular.module('starter.controllers', [])
         $scope.creditCard = mcard;
     }
      $scope.creditCard.amount = $scope.amount;
-     alert(JSON.stringify($scope.creditCard));
-
-
 
     nfc.removeTagDiscoveredListener(triggerEvent, function (){
     }, function (error){});
@@ -105,7 +103,6 @@ angular.module('starter.controllers', [])
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
       $scope.modal.show();
-        alert('recieved' + data);
     }).error(function (data, status, headers, config) {
         alert('There was a problem retrieving your information' + data+ status);
     });
@@ -187,9 +184,7 @@ angular.module('starter.controllers', [])
     });
     var channel = pusher.subscribe('test_channel');
     channel.bind('my_event', function (data) {
-        $scope.ticker_msgs.push({
-            message: data.message
-        })
+        $scope.ticker_msgs.push(data);
         $scope.$apply();
     });
     //  http.$get('flashpay.herokuapp.com/createPayment', params)
