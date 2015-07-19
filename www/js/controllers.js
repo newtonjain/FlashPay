@@ -4,6 +4,7 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope, $http, $ionicActionSheet, $ionicModal) {
     $scope.creditCard = {};
     $scope.amount = null;
+    $scope.txid = null;
 
   var vcard  = {
     firstName: 'Newton',
@@ -51,6 +52,17 @@ angular.module('starter.controllers', [])
         console.log("Error: " + reason);
       }
     );
+  };
+
+  $scope.verifyTxId = function (txid) {
+      $scope.txid = txid;
+      $http.post('https://flashpay.herokuapp.com/createPayment', $scope.txid)
+        .success(function (data) {
+            alert("Data: " + data);
+        })
+        .error(function (data) {
+            alert("Error: " + data);
+        });
   };
 
   var assignCard = function(tag) {
