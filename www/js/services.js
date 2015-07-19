@@ -2,7 +2,7 @@ angular.module('starter.services', [])
 
 .factory('Chats', function ($http) {
     function getData(callback) {
-        $http.get('http://flashpay.herokuapp.com/getPayments')
+        $http.get('https://flashpay.herokuapp.com/getPayments')
             .success(callback);
     }
 

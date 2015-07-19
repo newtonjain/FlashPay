@@ -159,10 +159,14 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('AccountCtrl', function ($scope) {
+.controller('AccountCtrl', function ($scope, Chats) {
     $scope.settings = {
         enableFriends: true
     };
+
+    Chats.all(function (transactions) {
+        $scope.chats = transactions;
+    });
 
     //  http.$get('flashpay.herokuapp.com/createPayment', params)
 });
