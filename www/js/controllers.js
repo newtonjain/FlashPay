@@ -34,6 +34,11 @@ angular.module('starter.controllers', [])
     $scope.modal = modal;
   });
 
+   $ionicModal.fromTemplateUrl('templates/transactionDetails.html', { scope: $scope })
+        .then(function (txDetails) {
+            $scope.txDetails = txDetails;
+        });
+
   function triggerEvent (nfcEvent) {
       $scope.tag = nfcEvent.tag;
       $scope.hideSheet();
@@ -62,9 +67,10 @@ angular.module('starter.controllers', [])
 
   $scope.verifyTxId = function (txid) {
       $scope.txid = txid;
-      $http.post('https://flashpay.herokuapp.com/createPayment', $scope.txid)
+      $http.get('https://flashpay.herokuapp.com/getinfo/' + $scope.txid)
         .success(function (data) {
-            alert("Data: " + data);
+            $scope.currentTx = data[0];
+            $scope.txDetails.show();
         })
         .error(function (data) {
             alert("Error: " + data);
@@ -103,6 +109,10 @@ angular.module('starter.controllers', [])
     $scope.modal.hide();
   };
 
+
+  $scope.closeTxDetails = function () {
+      $scope.txDetails.hide();
+  };
 
   $scope.justcheck = function(){    
     }
