@@ -5,6 +5,8 @@ angular.module('starter.controllers', [])
     $scope.creditCard = {};
     $scope.amount = null;
     $scope.txid = null;
+    
+
 
   var vcard  = {
     firstName: 'Newton',
@@ -32,6 +34,13 @@ angular.module('starter.controllers', [])
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
+  });
+
+  $ionicModal.fromTemplateUrl('templates/login.html', {
+    scope: $scope
+  }).then(function(modallogin) {
+      $scope.modallogin = modallogin;
+      $scope.modallogin.show();
   });
 
    $ionicModal.fromTemplateUrl('templates/transactionDetails.html', { scope: $scope })
@@ -109,6 +118,13 @@ angular.module('starter.controllers', [])
     $scope.modal.hide();
   };
 
+  $scope.doLogin = function (username, password) {
+      if (username.toLowerCase() === "newtonjain" && password.toLowerCase() === "1234") {
+          $scope.modallogin.hide();
+      } else {
+          alert("Invalid password entered");
+      }
+  };
 
   $scope.closeTxDetails = function () {
       $scope.txDetails.hide();
