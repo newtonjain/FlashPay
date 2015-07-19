@@ -5,8 +5,6 @@ angular.module('starter.controllers', [])
     $scope.creditCard = {};
     $scope.amount = null;
     $scope.txid = null;
-    
-
 
   var vcard  = {
     firstName: 'Newton',
@@ -119,7 +117,7 @@ angular.module('starter.controllers', [])
   };
 
   $scope.doLogin = function (username, password) {
-      if (username.toLowerCase() === "newtonjain" && password.toLowerCase() === "1234") {
+      if (username.toLowerCase() === "newton" && password.toLowerCase() === "1234") {
           $scope.modallogin.hide();
       } else {
           alert("Invalid password entered");
@@ -167,6 +165,12 @@ angular.module('starter.controllers', [])
     Chats.all(function (transactions) {
         $scope.chats = transactions;
     });
+
+    //  http.$get('flashpay.herokuapp.com/createPayment', params)
+})
+
+.controller('TickerCtrl', function ($scope) {
+
 
     //  http.$get('flashpay.herokuapp.com/createPayment', params)
 });
