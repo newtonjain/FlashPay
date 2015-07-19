@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-.controller('AppCtrl', function($scope, $http) {
+.controller('AppCtrl', function($scope, $http, $ionicActionSheet, $ionicModal) {
     $scope.creditCard = {};
     $scope.amount = null;
 
@@ -9,35 +9,43 @@ angular.module('starter.controllers', [])
     firstName: 'Newton',
     lastName: 'Jain',
     number: '4005519200000004',
-    expirationDate: '08/16',
-    amount: '99'
+    expirationDate: '0816',
+    amount: '0'
   },
   acard= {
     firstName: 'Tian',
     lastName: 'Yuan',
     number: '371449635398431',
-    expirationDate: '08/16',
-    amount: '99'
+    expirationDate: '0816',
+    amount: '0'
   },
   mcard = {
     firstName: 'Daniel',
     lastName: 'Scott',
     number: '4519023121272361',
-    expirationDate: '08/16',
-    amount: '99'
+    expirationDate: '0816',
+    amount: '0'
   }
 
     //document.addEventListener('deviceready', this.onDeviceReady, false);
-  $scope.tapping = function(){
+  $scope.tapping = function(amount){
+    //alert('amount'  + amount);
 
+    $scope.amount = amount;
     nfc.addTagDiscoveredListener(
       function (nfcEvent) {
         $scope.tag = nfcEvent.tag;
-        alert(JSON.stringify($scope.tag.id));
+        $scope.hideSheet();
         assignCard($scope.tag);
+
       },
       function () {
-        alert("Tap your card please.");
+      $scope.hideSheet = $ionicActionSheet.show({
+          buttons: [
+       { text: '<center><b>You are going to pay -' + $scope.amount}
+     ],
+           titleText: '<center>Tap your card please.</center>'
+        });
       },
       function (reason) {
         console.log("Error: " + reason);
@@ -58,11 +66,23 @@ angular.module('starter.controllers', [])
         alert('sup2');
         $scope.creditCard = mcard;
     }
+     $scope.creditCard.amount = $scope.amount;
+     alert(JSON.stringify($scope.creditCard));
+
+ $ionicModal.fromTemplateUrl('templates/login.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+    nfc.removeTagDiscoveredListener(function (nfcEvent){
+      alert('removing' + nfcEvent);
+    }, function (){
+    }, function (error){});
 
        $http.post('https://flashpay.herokuapp.com/createPayment', $scope.creditCard)
     .success(function (data, status, headers, config) {
-        alert('recieved' + 
-          );
+        alert('recieved' + data);
     }).error(function (data, status, headers, config) {
         alert('There was a problem retrieving your information' + data);
     });
