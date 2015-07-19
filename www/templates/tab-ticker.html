@@ -1,22 +1,11 @@
 <ion-view view-title="Tickers">
   <ion-content>
-  
-  <script>
-    // Enable pusher logging - don't include this in production
-    Pusher.log = function(message) {
-      if (window.console && window.console.log) {
-        window.console.log(message);
-      }
-    };
-
-    var pusher = new Pusher('991b4111cb90d8ba79f6', {
-      encrypted: true
-    });
-    var channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
-      alert(data.message);
-    });
-  </script>
-    
+      <ion-list>
+          <ion-item ng-repeat="ticker_msg in ticker_msgs" type="item-text-wrap">
+              <div class="item item-thumbnail-left">
+                  <p>{{ticker_msg.message}}</p>
+              </div>
+          </ion-item>
+      </ion-list>
   </ion-content>
 </ion-view>

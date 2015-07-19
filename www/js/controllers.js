@@ -171,6 +171,26 @@ angular.module('starter.controllers', [])
 
 .controller('TickerCtrl', function ($scope) {
 
+    $scope.cookie = "yummy";
 
+    $scope.ticker_msgs = [];
+
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function (message) {
+        if (window.console && window.console.log) {
+            window.console.log(message);
+        }
+    };
+
+    var pusher = new Pusher('991b4111cb90d8ba79f6', {
+        encrypted: true
+    });
+    var channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function (data) {
+        $scope.ticker_msgs.push({
+            message: data.message
+        })
+        $scope.$apply();
+    });
     //  http.$get('flashpay.herokuapp.com/createPayment', params)
 });
