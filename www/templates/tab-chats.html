@@ -6,7 +6,7 @@
         <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" >
             <a class="item item-thumbnail-left" href="#/tab/chats/{{chat.id}}">
                 <img ng-src="{{chat._attributes.creditCard.imageUrl}}">
-                <h2>{{chat._attributes.customer.firstName}} {{chat._attributes.customer.lastName}}</h2>
+                <h2>{{chat._attributes.billing.firstName}} {{chat._attributes.billing.lastName}}</h2>
                 <p>{{chat._attributes.createdAt.date}} {{chat._attributes.createdAt.timezone}}</p>
                 <p>${{chat._attributes.amount}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
